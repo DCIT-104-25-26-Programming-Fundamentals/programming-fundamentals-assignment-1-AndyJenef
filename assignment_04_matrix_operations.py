@@ -60,3 +60,120 @@
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
 # =============================================================================
 
+def read_matrix(rows, cols):
+    """Reads a rows x cols matrix, one row per line, space-separated values."""
+    matrix = []
+    for i in range(rows):
+        while True:
+            values = input(f"Enter row {i + 1}: ").split()
+            if len(values) != cols:
+                print(f"Error: Expected {cols} values, got {len(values)}. Try again.")
+                continue
+            matrix.append([int(v) for v in values])
+            break
+    return matrix
+
+
+def print_matrix(matrix):
+    """Prints a matrix in a neat, aligned grid."""
+    for row in matrix:
+        print(" ".join(f"{val:5}" for val in row))
+
+
+def transpose_matrix(matrix, rows, cols):
+    """Returns the transpose of a rows x cols matrix."""
+    result = [[0 for _ in range(rows)] for _ in range(cols)]
+    for i in range(rows):
+        for j in range(cols):
+            result[j][i] = matrix[i][j]
+    return result
+
+
+def add_matrices(a, b, rows, cols):
+    """Returns the element-wise sum of two rows x cols matrices."""
+    result = [[0 for _ in range(cols)] for _ in range(rows)]
+    for i in range(rows):
+        for j in range(cols):
+            result[i][j] = a[i][j] + b[i][j]
+    return result
+
+
+def multiply_matrices(a, b, m, n, p):
+    """Multiplies an m x n matrix A by an n x p matrix B, returning an m x p result."""
+    result = [[0 for _ in range(p)] for _ in range(m)]
+    for i in range(m):
+        for j in range(p):
+            total = 0
+            for k in range(n):
+                total += a[i][k] * b[k][j]
+            result[i][j] = total
+    return result
+
+
+if __name__ == "__main__":
+    # -----------------------------------------------------------------------
+    # PART A — Transpose
+    # -----------------------------------------------------------------------
+    print("===== PART A: Transpose a Matrix =====")
+    rows = int(input("Enter number of rows: "))
+    cols = int(input("Enter number of columns: "))
+
+    matrix = read_matrix(rows, cols)
+
+    print("\nOriginal Matrix:")
+    print_matrix(matrix)
+
+    transposed = transpose_matrix(matrix, rows, cols)
+
+    print("\nTransposed Matrix:")
+    print_matrix(transposed)
+
+    # -----------------------------------------------------------------------
+    # PART B — Addition
+    # -----------------------------------------------------------------------
+    print("\n===== PART B: Add Two Matrices =====")
+    add_rows = int(input("Enter number of rows: "))
+    add_cols = int(input("Enter number of columns: "))
+
+    print("\nEnter Matrix A:")
+    matrix_a = read_matrix(add_rows, add_cols)
+
+    print("\nEnter Matrix B:")
+    matrix_b = read_matrix(add_rows, add_cols)
+
+    sum_result = add_matrices(matrix_a, matrix_b, add_rows, add_cols)
+
+    print("\nMatrix A:")
+    print_matrix(matrix_a)
+    print("\nMatrix B:")
+    print_matrix(matrix_b)
+    print("\nSum (A + B):")
+    print_matrix(sum_result)
+
+    # -----------------------------------------------------------------------
+    # PART C — Multiplication
+    # -----------------------------------------------------------------------
+    print("\n===== PART C: Multiply Two Matrices =====")
+    m = int(input("Enter rows of Matrix A (M): "))
+    n = int(input("Enter columns of Matrix A (N): "))
+
+    print("\nEnter Matrix A:")
+    mat_a = read_matrix(m, n)
+
+    n2 = int(input(f"\nEnter rows of Matrix B (must equal N = {n}): "))
+    p = int(input("Enter columns of Matrix B (P): "))
+
+    if n2 != n:
+        print("Error: Number of columns in A must equal number of rows in B.")
+    else:
+        print("\nEnter Matrix B:")
+        mat_b = read_matrix(n2, p)
+
+        product = multiply_matrices(mat_a, mat_b, m, n, p)
+
+        print("\nMatrix A:")
+        print_matrix(mat_a)
+        print("\nMatrix B:")
+        print_matrix(mat_b)
+        print("\nProduct (A x B):")
+        print_matrix(product)
